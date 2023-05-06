@@ -131,10 +131,13 @@ app.post('/storage/removeItem', jsonParser, async (req, res) => {
   try {
     const postData = req.body;
 
-    console.log(`Here is your item data:`);
+    console.log(`Here is your item removal data:`);
     console.dir(postData);
 
-    if (await removeItem(postData)) return res.status(201).json({ message: 'Item Removed' });
+    if (await removeItem(postData)) {
+      console.log('Item Removed');
+      return res.status(201).json({ message: 'Item Removed' });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({

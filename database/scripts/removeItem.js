@@ -2,7 +2,7 @@ const itemModel = require('../models/ItemModel');
 
 const removeItem = async (data) => {
   try {
-    await itemModel.findByIdAndRemove({ _id: data._id });
+    await itemModel.findOneAndRemove({ code: data.code, email: data.email });
     return true;
   } catch (err) {
     console.log(err);
