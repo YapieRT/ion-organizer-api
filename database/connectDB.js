@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const dbName = 'ionDB';
 
 const MONGODB_URI = `mongodb://localhost:27017/${dbName}`;
 
-const connectDB = async () => {
+export const connectDB = async () => {
   try {
     await mongoose.connect(MONGODB_URI, {
       useNewUrlParser: true,
@@ -16,5 +16,3 @@ const connectDB = async () => {
     process.exit(1);
   }
 };
-
-module.exports = connectDB;
