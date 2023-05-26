@@ -25,27 +25,27 @@ const jsonParser = bodyParser.json();
 
 // JWT verify
 
-app.get('/UserAuth', userController.userAuth);
+app.get('/api/UserAuth', userController.userAuth);
 
 // Fetching Storage Data
 
-app.get('/storage/getItems', itemController.getItems);
+app.get('/api/storage/getItems', itemController.getItems);
 
 // Log In
 
-app.post('/login', jsonParser, userController.login);
+app.post('/api/login', jsonParser, userController.login);
 
 // Registration new user
 
-app.post('/registration', jsonParser, userController.registration);
+app.post('/api/registration', jsonParser, userController.registration);
 
 // Add new item
 
-app.post('/storage/addItem', jsonParser, itemController.addItem);
+app.post('/api/storage/addItem', jsonParser, itemController.addItem);
 
 // Remove item
 
-app.post('/storage/removeItem', jsonParser, itemController.removeItem);
+app.delete('/api/storage/removeItem', jsonParser, itemController.removeItem);
 
 // Listening
 
