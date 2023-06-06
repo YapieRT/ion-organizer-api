@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 
 import * as userController from './controllers/userController.js';
 import * as itemController from './controllers/itemController.js';
+import * as validator from './validation/validator.js';
 
 import { connectDB } from './db.js';
 
@@ -31,11 +32,11 @@ app.get('/api/storage/getItems', itemController.getItems);
 
 // Log In
 
-app.post('/api/login', userController.login);
+app.post('/api/login', validator.loginValidator(), userController.login);
 
 // Registration new user
 
-app.post('/api/registration', userController.registration);
+app.post('/api/registration', validator.registrationValidator(), userController.registration);
 
 // Add new item
 

@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     type: String,
     reguired: true,
   },
-  password: {
+  passwordHash: {
     type: String,
     reguired: true,
   },

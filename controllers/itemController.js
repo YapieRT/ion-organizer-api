@@ -6,14 +6,14 @@ const secretKey = 'SecretION';
 
 const insertItem = async (data) => {
   try {
-    const item = await itemModel.findOne({ code: data.code, email: data.email });
+    const item = await ItemModel.findOne({ code: data.code, email: data.email });
     if (!Object.is(item, null)) {
       if (data.name !== item.name) return false;
       const quantity = item.quantity + Number(data.quantity);
-      await itemModel.updateOne({ name: data.name, email: data.email }, { $set: { quantity: quantity } });
+      await ItemModel.updateOne({ name: data.name, email: data.email }, { $set: { quantity: quantity } });
       return true;
     } else {
-      await itemModel.create(data);
+      await ItemModel.create(data);
       return true;
     }
   } catch (err) {
@@ -23,7 +23,7 @@ const insertItem = async (data) => {
 
 const remove = async (data) => {
   try {
-    await itemModel.findOneAndRemove({ code: data.code, email: data.email });
+    await ItemModel.findOneAndRemove({ code: data.code, email: data.email });
     return true;
   } catch (err) {
     console.log(err);
@@ -54,7 +54,7 @@ export const addItem = async (req, res) => {
     console.dir(postData);
     if (await insertItem(postData)) return res.status(201).json({ message: 'Item Inserted' });
     else {
-      return res.status(406).json({ message: 'Wrong data' });
+      return res.status(400).json({ message: 'Wrong data' });
     }
   } catch (err) {
     console.log(err);

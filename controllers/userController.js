@@ -1,6 +1,9 @@
 import UserModel from '../database/models/UserModel.js';
 
+import { validationResult } from 'express-validator';
+
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 const secretKey = 'SecretION';
 
@@ -23,7 +26,9 @@ const loginVerify = async (email, password) => {
   const user = await UserModel.findOne({ email });
 
   if (!Object.is(user, null)) {
-    if (user.password == password) return true;
+    const match = await bcrypt.compare(password, user.passwordHash);
+    if (match) return true;
+    else return false;
   }
   return false;
 };
@@ -41,16 +46,20 @@ export const userAuth = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const postData = req.body;
-
     console.log(`Attempt to login:`);
-    console.dir(postData);
+    console.dir(req.body);
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+    const postData = req.body;
 
     if (await loginVerify(postData.email, postData.password)) {
       const email = postData.email;
       const token = jwt.sign({ email }, secretKey, { expiresIn: 3600 });
-      return res.status(201).json({ auth: true, token: token });
-    } else return res.status(401).json({ message: 'Login Failed(wrong data)' });
+      return res.status(200).json({ auth: true, token: token });
+    } else return res.status(400).json({ message: 'Login Failed(wrong password or email).' });
   } catch (err) {
     console.log(err);
     res.status(500).json({
@@ -61,17 +70,31 @@ export const login = async (req, res) => {
 
 export const registration = async (req, res) => {
   try {
+    console.log(`Attempt to register:`);
+    console.dir(req.body);
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
     const postData = req.body;
 
-    console.log(`Here is your registration data:`);
-    console.dir(postData);
-
     if (await doesUserExists(postData.email)) {
-      return res.status(400).json({ message: 'Such email already used' });
+      return res.status(400).json({ message: 'Such email already used.' });
     }
-    await insertRegistrationData(postData);
+    const hashedPassword = await bcrypt.hash(postData.password, 10);
+
+    await insertRegistrationData({
+      name: postData.name,
+      email: postData.email,
+      organization: postData.organization,
+      passwordHash: hashedPassword,
+    });
+
     const email = postData.email;
+
     const token = jwt.sign({ email }, secretKey, { expiresIn: 300 });
+
     return res.status(201).json({ auth: true, token: token });
   } catch (err) {
     console.log(err);
