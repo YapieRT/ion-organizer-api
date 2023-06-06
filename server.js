@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import * as userController from './controllers/userController.js';
 import * as itemController from './controllers/itemController.js';
 
-import { connectDB } from './database/connectDB.js';
+import { connectDB } from './db.js';
 
 // Defining app, app cors, port
 

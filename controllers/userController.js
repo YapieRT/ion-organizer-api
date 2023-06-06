@@ -4,6 +4,14 @@ import jwt from 'jsonwebtoken';
 
 const secretKey = 'SecretION';
 
+const insertRegistrationData = async (data) => {
+  try {
+    const result = await UserModel.create(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const doesUserExists = async (email) => {
   const inUse = await UserModel.findOne({ email });
 
