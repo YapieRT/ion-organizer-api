@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-
+import dotenv from 'dotenv';
 // Database functions
 
 import * as userController from './controllers/userController.js';
@@ -12,12 +12,14 @@ import { connectDB } from './database/connectDB.js';
 
 connectDB();
 
+dotenv.config();
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const port = 8080;
+const PORT = process.env.PORT || 8080;
 
 // JWT verify
 
@@ -45,4 +47,9 @@ app.delete('/api/storage/removeItem', itemController.removeItem);
 
 // Listening
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(PORT, (err) => {
+  console.log(`Server listening on port ${PORT}...`);
+  if (err) {
+    return console.log(err);
+  }
+});
