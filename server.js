@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
 
 // Database functions
 
@@ -16,12 +15,9 @@ connectDB();
 const app = express();
 
 app.use(cors());
+app.use(express.json());
 
 const port = 8080;
-
-// Defining parser
-
-const jsonParser = bodyParser.json();
 
 // JWT verify
 
@@ -33,19 +29,19 @@ app.get('/api/storage/getItems', itemController.getItems);
 
 // Log In
 
-app.post('/api/login', jsonParser, userController.login);
+app.post('/api/login', userController.login);
 
 // Registration new user
 
-app.post('/api/registration', jsonParser, userController.registration);
+app.post('/api/registration', userController.registration);
 
 // Add new item
 
-app.post('/api/storage/addItem', jsonParser, itemController.addItem);
+app.post('/api/storage/addItem', itemController.addItem);
 
 // Remove item
 
-app.delete('/api/storage/removeItem', jsonParser, itemController.removeItem);
+app.delete('/api/storage/removeItem', itemController.removeItem);
 
 // Listening
 
