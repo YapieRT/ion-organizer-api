@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  ion-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ion-organizer-api
+    container_name: ion-api
+    ports:
+      - 8080:8080

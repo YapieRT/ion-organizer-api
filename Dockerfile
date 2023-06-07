@@ -6,6 +6,8 @@ WORKDIR /app
 # Copy app files
 COPY . .
 
+ENV PORT="${PORT}"
+
 # Install dependencies
 RUN npm install
 
