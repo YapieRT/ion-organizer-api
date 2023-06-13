@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:18-alpine
 
 # Set the working directory to /app inside the container
 WORKDIR /app
@@ -6,13 +6,14 @@ WORKDIR /app
 # Copy app files
 COPY . .
 
-ENV PORT=8080
+ARG WPORT
+ENV PORT=$WPORT
 
 # Install dependencies
 RUN npm install
 
 # Expose port
-EXPOSE 8080
+EXPOSE $WPORT
 
 # Start server
 CMD [ "node", "server.js" ]
