@@ -6,8 +6,7 @@ WORKDIR /app
 # Copy app files
 COPY . .
 
-ARG WPORT
-ENV PORT=$WPORT
+ENV PORT=
 
 # Install dependencies
 RUN npm install
